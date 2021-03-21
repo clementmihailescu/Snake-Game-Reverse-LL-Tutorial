@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   randomIntFromInterval,
   reverseLinkedList,
@@ -202,6 +202,7 @@ const Board = () => {
     setSnakeCells(new Set([snakeLLStartingValue.cell]));
     setDirection(Direction.RIGHT);
   };
+  console.log("Mohh")
 
   return (
     <>
@@ -266,7 +267,7 @@ const getCoordsInDirection = (coords, direction) => {
 };
 
 const isOutOfBounds = (coords, board) => {
-  const {row, col} = coords;
+  const { row, col } = coords;
   if (row < 0 || col < 0) return true;
   if (row >= board.length || col >= board[0].length) return true;
   return false;
@@ -282,8 +283,8 @@ const getDirectionFromKey = key => {
 
 const getNextNodeDirection = (node, currentDirection) => {
   if (node.next === null) return currentDirection;
-  const {row: currentRow, col: currentCol} = node.value;
-  const {row: nextRow, col: nextCol} = node.next.value;
+  const { row: currentRow, col: currentCol } = node.value;
+  const { row: nextRow, col: nextCol } = node.next.value;
   if (nextRow === currentRow && nextCol === currentCol + 1) {
     return Direction.RIGHT;
   }
