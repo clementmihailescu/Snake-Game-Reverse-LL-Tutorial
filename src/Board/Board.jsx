@@ -202,7 +202,7 @@ const Board = () => {
     setSnakeCells(new Set([snakeLLStartingValue.cell]));
     setDirection(Direction.RIGHT);
   };
-  console.log("Mohh")
+
 
   return (
     <>
