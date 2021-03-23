@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   randomIntFromInterval,
   reverseLinkedList,
@@ -58,12 +58,26 @@ const Board = () => {
   const [snake, setSnake] = useState(
     new LinkedList(getStartingSnakeLLValue(board)),
   );
-  const [snakeCells, setSnakeCells] = useState(
+  
+  const [snakeCells, _setSnakeCells] = useState(
     new Set([snake.head.value.cell]),
   );
+  const snakeCellsHookRef = useRef(snakeCells);
+  const setSnakeCells = newSnakeCells => {
+        snakeCellsHookRef.current = newSnakeCells;
+        _setSnakeCells(newSnakeCells);
+  }
+  
   // Naively set the starting food cell 5 cells away from the starting snake cell.
   const [foodCell, setFoodCell] = useState(snake.head.value.cell + 5);
-  const [direction, setDirection] = useState(Direction.RIGHT);
+  
+  const [direction, _setDirection] = useState(Direction.RIGHT);
+  const directionHookRef = useRef(direction);
+  const setDirection = direction => {
+        directionHookRef.current = direction;
+        _setDirection(direction);
+  }
+  
   const [foodShouldReverseDirection, setFoodShouldReverseDirection] = useState(
     false,
   );
@@ -86,11 +100,7 @@ const Board = () => {
     const isValidDirection = newDirection !== '';
     if (!isValidDirection) return;
     const snakeWillRunIntoItself =
-      getOppositeDirection(newDirection) === direction && snakeCells.size > 1;
-    // Note: this functionality is currently broken, for the same reason that
-    // `useInterval` is needed. Specifically, the `direction` and `snakeCells`
-    // will currently never reflect their "latest version" when `handleKeydown`
-    // is called. I leave it as an exercise to the viewer to fix this :P
+      getOppositeDirection(newDirection) === directionHookRef.current && snakeCellsHookRef.current.size > 1;
     if (snakeWillRunIntoItself) return;
     setDirection(newDirection);
   };
